@@ -15,7 +15,7 @@ WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
 # if file does not exist
 if not os.path.isfile(RESULTS_FILE):
-    print(f"Error: cannot find {RESULTS_FILE}.")
+    print(f"Error: cannot find \"{RESULTS_FILE}\".")
     exit(1)
 
 # create discord webhook
@@ -37,10 +37,17 @@ def visualize(filename):
             results[gen].append(score)
         results_file.close()
 
-    for x, y in results.items():
-        plt.scatter([x] * len(y), tuple(y))
+    x = list(results.keys())
+    y = [results[k] for k in results]
+    y_avg = [sum(results[k])/len(results[k]) for k in results]
 
-    plt.xticks(list(results.keys()))
+    for xe, ye in zip(x, y):
+        plt.scatter([xe] * len(ye), tuple(ye))
+
+    plt.xticks(x)
+    plt.plot(x, y_avg, color='red', linestyle='-', linewidth=1, marker='o',
+             markerfacecolor='red', markersize=8)
+
     plt.xlabel('Gen')
     plt.ylabel('Fitness')
     plt.title('Xpilot-AI GA performance')
@@ -56,6 +63,8 @@ def send_report():
         results_reader = csv.reader(results_file, delimiter=',')
         next(results_reader)
         for row in results_reader:
+            if not row.strip():
+                continue
             gen = int(row[0])
             id = int(row[1])
             _ = row[2]
