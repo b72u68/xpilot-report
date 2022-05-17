@@ -48,13 +48,11 @@ def visualize(filename):
 
 
 # send report
-def send_report(filename):
+def send_report():
     results = defaultdict(list)
-    message = '''
-    Gen, PopulationId, Fitness\n
-    '''
+    message = "Gen, PopulationId, Fitness\n"
 
-    with open(filename, 'r', newline='') as results_file:
+    with open(RESULTS_FILE, 'r', newline='') as results_file:
         results_reader = csv.reader(results_file, delimiter=',')
         next(results_reader)
         for row in results_reader:
@@ -85,6 +83,7 @@ if __name__ == "__main__":
         recent_access_time = pathlib.Path(RESULTS_FILE).stat().st_mtime
         if recent_access_time == last_access_time:
             continue
-
+        last_access_time = recent_access_time
+        send_report()
         visualize(RESULTS_FILE)
         send_graph()
