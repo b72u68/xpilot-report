@@ -24,6 +24,9 @@ webhook = Webhook.from_url(WEBHOOK_URL, adapter=RequestsWebhookAdapter())
 
 # draw graph from results file
 def visualize(filename):
+    if os.path.isfile(GRAPH_NAME):
+        os.remove(GRAPH_NAME)
+
     results = defaultdict(list)
 
     with open(filename, 'r', newline='') as results_file:
@@ -52,6 +55,7 @@ def visualize(filename):
     plt.ylabel('Fitness')
     plt.title('Xpilot-AI GA performance')
     plt.savefig(GRAPH_NAME)
+    plt.close()
 
 
 # send report
