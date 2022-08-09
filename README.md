@@ -4,6 +4,6 @@ Bot for sending Xpilot-AI report on Discord.
 
 Resulted report will be sent like this:
 
-![Xpilot-AI Report](Xpilot-ai.jpg)
+![Xpilot-AI Report](xpilot-ai.jpg)
 
 (Ignore the stats, my AI was very dumb)
